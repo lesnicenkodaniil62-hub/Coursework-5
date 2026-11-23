@@ -6,7 +6,7 @@
 
 1. Клонируйте репозиторий:
 ```
-git clone https://github.com/lesnicenkodaniil62-hub/
+git clone https://github.com/lesnicenkodaniil62-hub/Coursework-5
 ```
 2. Установите зависимости:
 ```
