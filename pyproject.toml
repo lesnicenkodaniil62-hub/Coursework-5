@@ -1,10 +1,12 @@
 # ============================================
-# Black - форматирование кода
+# Black — форматирование кода
+# ============================================
+# Black — code formatting
 # ============================================
 [tool.black]
 line-length = 119
 target-version = ['py312']
-exclude = '''
+extend-exclude = '''
 /(
     \.eggs
   | \.git
@@ -17,20 +19,25 @@ exclude = '''
   | buck-out
   | build
   | dist
+  | migrations
 )/
 '''
 
 # ============================================
-# isort - сортировка импортов
+# isort — сортировка импортов
+# ============================================
+# isort — import sorting
 # ============================================
 [tool.isort]
 profile = "black"
 line_length = 119
 known_third_party = ["django", "rest_framework"]
-skip = ["venv", ".venv"]
+skip = ["venv", ".venv", "migrations"]
 
 # ============================================
-# mypy - проверка типов
+# mypy — проверка типов
+# ============================================
+# mypy — static type checking
 # ============================================
 [tool.mypy]
 plugins = ["mypy_django_plugin.main"]
@@ -40,14 +47,55 @@ disallow_untyped_defs = false
 warn_return_any = false
 warn_unused_configs = true
 check_untyped_defs = true
+exclude = ["venv", ".venv", "migrations"]
 
+# ============================================
+# Модели наших приложений проверяем строго
+# ============================================
+# Our app models are checked strictly
+# ============================================
 [[tool.mypy.overrides]]
-module = "apps.*.models.*"
+module = ["users.models", "habits.models"]
 ignore_errors = false
 
 # ============================================
-# django-stubs
+# django-stubs — плагин типизации Django
+# ============================================
+# django-stubs — Django typing plugin
 # ============================================
 [tool.django-stubs]
 django_settings_module = "config.settings"
-exclude = "venv"
+
+# ============================================
+# pytest — запуск тестов
+# ============================================
+# pytest — test runner
+# ============================================
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings"
+python_files = ["tests.py", "test_*.py", "*_tests.py"]
+
+# ============================================
+# coverage — измерение покрытия и исключения из статистики
+# ============================================
+# coverage — coverage measurement and exclusions
+# ============================================
+[tool.coverage.run]
+source = ["users", "habits", "config"]
+omit = [
+    "*/migrations/*",
+    "*/tests/*",
+    "*/management/commands/*",
+    "manage.py",
+    "config/wsgi.py",
+    "config/asgi.py",
+]
+
+# ============================================
+# Порог покрытия — не ниже 80 процентов
+# ============================================
+# Coverage threshold — at least 80 percent
+# ============================================
+[tool.coverage.report]
+fail_under = 80
+show_missing = true

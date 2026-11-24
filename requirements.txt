@@ -69,9 +69,16 @@ djangorestframework-simplejwt>=5.3.0,<6.0.0
 flake8>=7.3.0,<8.0.0
 black>=26.5.1,<27.0.0
 isort>=9.0.1,<10.0.0
-mypy==1.11.1
-django-stubs==5.0.4
-django-stubs-ext==5.0.4
+
+# ============================================
+# Типизация: mypy ставится через extra compatible-mypy,
+# отдельный пин mypy не указываем во избежание конфликта
+# ============================================
+# Typing: mypy is installed via the compatible-mypy extra,
+# no separate mypy pin to avoid a dependency conflict
+# ============================================
+django-stubs[compatible-mypy]==6.1.2
+django-stubs-ext==6.1.2
 
 # ============================================
 # Инструменты для тестирования и разработки
@@ -79,6 +86,7 @@ django-stubs-ext==5.0.4
 # Testing & Dev Tools
 # ============================================
 pytest>=9.1.1,<10.0.0
+pytest-django>=4.9,<5.0
 pytest-cov>=7.1.0,<8.0.0
 ipython>=9.17.1,<10.0.0
 coverage>=7.0.0,<8.0.0
