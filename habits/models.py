@@ -121,6 +121,20 @@ class Habit(models.Model):
     # ============================================
     is_public = models.BooleanField(default=False, verbose_name="Признак публичности")
 
+    # ============================================
+    # Дата последнего отправленного напоминания.
+    # Служебное поле: не редактируется вручную и не отдаётся в API.
+    # ============================================
+    # Date of the last sent reminder.
+    # Internal field: not editable manually and not exposed via the API.
+    # ============================================
+    last_reminded_at = models.DateField(
+        null=True,
+        blank=True,
+        editable=False,
+        verbose_name="Дата последнего напоминания",
+    )
+
     class Meta:
         verbose_name = "Привычка"
         verbose_name_plural = "Привычки"

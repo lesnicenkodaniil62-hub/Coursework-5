@@ -6,6 +6,7 @@ Celery entry point for the project.
 import os
 
 from celery import Celery
+from celery.schedules import crontab
 
 # ============================================
 # Модуль настроек Django по умолчанию
@@ -29,3 +30,15 @@ app.config_from_object("django.conf:settings", namespace="CELERY")
 # Autodiscover tasks in installed apps
 # ============================================
 app.autodiscover_tasks()
+
+# ============================================
+# Расписание: проверка привычек каждую минуту
+# ============================================
+# Schedule: check habits every minute
+# ============================================
+app.conf.beat_schedule = {
+    "send-habit-reminders-every-minute": {
+        "task": "notifications.tasks.send_habit_reminders",
+        "schedule": crontab(minute="*"),
+    },
+}

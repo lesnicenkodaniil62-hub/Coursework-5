@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     # ============================================
     "users",
     "habits",
+    "notifications",
 ]
 
 # ============================================
@@ -190,6 +191,14 @@ CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+CELERY_TIMEZONE = "Europe/Moscow"
+
+# ============================================
+# Telegram: токен бота для рассылки напоминаний
+# ============================================
+# Telegram: bot token used for reminder delivery
+# ============================================
+TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
 
 # ============================================
 # CORS: разрешённые домены фронтенда
@@ -222,7 +231,6 @@ LANGUAGE_CODE = "ru-ru"
 TIME_ZONE = "Europe/Moscow"
 USE_I18N = True
 USE_TZ = True
-CELERY_TIMEZONE = TIME_ZONE
 
 # ============================================
 # Статика и медиа
