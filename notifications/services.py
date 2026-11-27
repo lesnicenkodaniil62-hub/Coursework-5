@@ -4,7 +4,6 @@ Service for sending messages to Telegram.
 """
 
 import logging
-from typing import Any
 
 import requests
 from django.conf import settings
@@ -34,14 +33,6 @@ def send_telegram_message(chat_id: str, text: str) -> bool:
     url = f"https://api.telegram.org/bot{token}/sendMessage"
 
     # ============================================
-    # Необязательный прокси: нужен, если API недоступен напрямую
-    # ============================================
-    # Optional proxy: used when the API is not reachable directly
-    # ============================================
-    proxy: str = settings.TELEGRAM_PROXY
-    proxies = {"http": proxy, "https": proxy} if proxy else None
-
-    # ============================================
     # Сетевые ошибки не должны ронять задачу рассылки
     # ============================================
     # Network errors must not break the reminder task
@@ -51,29 +42,10 @@ def send_telegram_message(chat_id: str, text: str) -> bool:
             url,
             json={"chat_id": chat_id, "text": text},
             timeout=REQUEST_TIMEOUT,
-            proxies=proxies,
         )
+        response.raise_for_status()
     except requests.RequestException:
-        logger.exception("Сетевая ошибка при отправке в чат %s.", chat_id)
-        return False
-
-    # ============================================
-    # Разбираем ответ Telegram: он может отклонить сообщение
-    # ============================================
-    # Parse the Telegram reply: it may reject the message
-    # ============================================
-    try:
-        data: dict[str, Any] = response.json()
-    except ValueError:
-        logger.error("Некорректный ответ Telegram: %s", response.text[:200])
-        return False
-
-    if not data.get("ok"):
-        logger.error(
-            "Telegram отклонил сообщение в чат %s: %s",
-            chat_id,
-            data.get("description"),
-        )
+        logger.exception("Не удалось отправить сообщение в чат %s.", chat_id)
         return False
 
     return True

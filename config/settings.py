@@ -191,7 +191,6 @@ CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
-CELERY_TIMEZONE = "Europe/Moscow"
 
 # ============================================
 # Telegram: токен бота для рассылки напоминаний
@@ -199,13 +198,6 @@ CELERY_TIMEZONE = "Europe/Moscow"
 # Telegram: bot token used for reminder delivery
 # ============================================
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
-
-# ============================================
-# Необязательный прокси для доступа к Telegram API
-# ============================================
-# Optional proxy for reaching the Telegram API
-# ============================================
-TELEGRAM_PROXY = os.getenv("TELEGRAM_PROXY", "")
 
 # ============================================
 # CORS: разрешённые домены фронтенда
@@ -238,6 +230,7 @@ LANGUAGE_CODE = "ru-ru"
 TIME_ZONE = "Europe/Moscow"
 USE_I18N = True
 USE_TZ = True
+CELERY_TIMEZONE = TIME_ZONE
 
 # ============================================
 # Статика и медиа

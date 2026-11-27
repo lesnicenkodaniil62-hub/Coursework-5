@@ -1,6 +1,6 @@
 """
-Точка входа Celery для проекта.
-Celery entry point for the project.
+Точка входа Celery и расписание периодических задач.
+Celery entry point and periodic task schedule.
 """
 
 import os

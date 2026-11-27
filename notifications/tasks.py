@@ -9,6 +9,7 @@ from celery import shared_task
 from django.utils import timezone
 
 from habits.models import Habit
+from notifications.models import ReminderLog
 from notifications.services import build_reminder_text, send_telegram_message
 
 logger = logging.getLogger(__name__)
@@ -40,11 +41,12 @@ def send_habit_reminders() -> int:
     sent = 0
     for habit in habits:
         # ============================================
-        # Соблюдаем периодичность: не чаще, чем раз в N дней
+        # Periodичность проверяем по журналу напоминаний
         # ============================================
-        # Respect the periodicity: no more often than once every N days
+        # Periodicity is checked against the reminder log
         # ============================================
-        if habit.last_reminded_at is not None and (today - habit.last_reminded_at).days < habit.periodicity:
+        last_log = habit.reminder_logs.order_by("-sent_date").first()
+        if last_log is not None and (today - last_log.sent_date).days < habit.periodicity:
             continue
 
         # ============================================
@@ -58,8 +60,7 @@ def send_habit_reminders() -> int:
             continue
 
         if send_telegram_message(chat_id, build_reminder_text(habit)):
-            habit.last_reminded_at = today
-            habit.save(update_fields=["last_reminded_at"])
+            ReminderLog.objects.get_or_create(habit=habit, sent_date=today)
             sent += 1
 
     logger.info("Отправлено напоминаний: %s", sent)
