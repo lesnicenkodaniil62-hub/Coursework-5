@@ -201,6 +201,13 @@ CELERY_TIMEZONE = "Europe/Moscow"
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
 
 # ============================================
+# Необязательный прокси для доступа к Telegram API
+# ============================================
+# Optional proxy for reaching the Telegram API
+# ============================================
+TELEGRAM_PROXY = os.getenv("TELEGRAM_PROXY", "")
+
+# ============================================
 # CORS: разрешённые домены фронтенда
 # ============================================
 # CORS: allowed frontend origins
