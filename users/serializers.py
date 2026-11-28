@@ -25,15 +25,38 @@ class UserProfileSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     """
     Данные текущего пользователя вместе с профилем.
+    Поддерживает обновление telegram_chat_id через PATCH.
     Current user data together with the profile.
+    Supports updating telegram_chat_id via PATCH.
     """
 
-    profile = UserProfileSerializer(read_only=True)
+    profile = UserProfileSerializer()
 
     class Meta:
         model = User
         fields = ("id", "username", "email", "first_name", "last_name", "profile")
         read_only_fields = ("id", "username")
+
+    def update(self, instance: User, validated_data: dict[str, Any]) -> User:
+        """
+        Обновляет пользователя и вложенный профиль.
+        Updates the user and the nested profile.
+        """
+        profile_data = validated_data.pop("profile", None)
+
+        # Обновляем поля пользователя
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+
+        # Обновляем профиль
+        if profile_data is not None:
+            profile = instance.profile
+            for attr, value in profile_data.items():
+                setattr(profile, attr, value)
+            profile.save()
+
+        return instance
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -42,11 +65,6 @@ class RegisterSerializer(serializers.ModelSerializer):
     Registration of a new user.
     """
 
-    # ============================================
-    # Пароль только для записи, проверяется валидаторами Django
-    # ============================================
-    # The password is write-only and checked by Django validators
-    # ============================================
     password = serializers.CharField(write_only=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True)
 
