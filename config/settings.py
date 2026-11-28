@@ -32,7 +32,7 @@ load_dotenv(BASE_DIR / ".env", override=True)
 # ============================================
 SECRET_KEY = os.getenv("SECRET_KEY", "unsafe-dev-key")
 DEBUG = os.getenv("DEBUG", "False") == "True"
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1,testserver").split(",")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",") + ["testserver"]
 
 # ============================================
 # Приложения
@@ -72,9 +72,9 @@ INSTALLED_APPS = [
 ]
 
 # ============================================
-# Промежуточное ПО (CORS-middleware выше CommonMiddleware)
+# Промежуточное ПО
 # ============================================
-# Middleware (CORS middleware placed before CommonMiddleware)
+# Middleware
 # ============================================
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -89,11 +89,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "config.urls"
 
-# ============================================
-# Шаблоны
-# ============================================
-# Templates
-# ============================================
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -127,18 +122,8 @@ DATABASES = {
     }
 }
 
-# ============================================
-# Кастомная модель пользователя
-# ============================================
-# Custom user model
-# ============================================
 AUTH_USER_MODEL = "users.User"
 
-# ============================================
-# Валидаторы паролей
-# ============================================
-# Password validators
-# ============================================
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
@@ -147,9 +132,9 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # ============================================
-# DRF: JWT-аутентификация, права по умолчанию, фильтры
+# DRF и JWT
 # ============================================
-# DRF: JWT authentication, default permissions, filters
+# DRF and JWT
 # ============================================
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": ("rest_framework_simplejwt.authentication.JWTAuthentication",),
@@ -157,11 +142,6 @@ REST_FRAMEWORK = {
     "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
 }
 
-# ============================================
-# Настройки SimpleJWT
-# ============================================
-# SimpleJWT settings
-# ============================================
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
@@ -169,9 +149,9 @@ SIMPLE_JWT = {
 }
 
 # ============================================
-# Кэш через локальный Redis (база /1)
+# Кэш и Celery
 # ============================================
-# Cache via local Redis (database /1)
+# Cache and Celery
 # ============================================
 CACHES = {
     "default": {
@@ -180,11 +160,6 @@ CACHES = {
     }
 }
 
-# ============================================
-# Celery: брокер и бэкенд результатов через Redis
-# ============================================
-# Celery: broker and result backend via Redis
-# ============================================
 CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL", "redis://127.0.0.1:6379/0")
 CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND", "redis://127.0.0.1:6379/0")
 CELERY_ACCEPT_CONTENT = ["json"]
@@ -193,9 +168,9 @@ CELERY_RESULT_SERIALIZER = "json"
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 
 # ============================================
-# Telegram: токен бота для рассылки напоминаний
+# Telegram
 # ============================================
-# Telegram: bot token used for reminder delivery
+# Telegram
 # ============================================
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
 
