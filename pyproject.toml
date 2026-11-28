@@ -81,7 +81,7 @@ python_files = ["tests.py", "test_*.py", "*_tests.py"]
 # coverage — coverage measurement and exclusions
 # ============================================
 [tool.coverage.run]
-source = ["users", "habits", "config"]
+source = ["users", "habits", "notifications", "config"]
 omit = [
     "*/migrations/*",
     "*/tests/*",
@@ -89,6 +89,7 @@ omit = [
     "manage.py",
     "config/wsgi.py",
     "config/asgi.py",
+    "config/celery.py",
 ]
 
 # ============================================
