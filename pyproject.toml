@@ -76,7 +76,7 @@ DJANGO_SETTINGS_MODULE = "config.settings"
 python_files = ["tests.py", "test_*.py", "*_tests.py"]
 
 # ============================================
-# coverage — измерение покрытия и исключения из статистики
+# coverage — измерение покрытия и исключения
 # ============================================
 # coverage — coverage measurement and exclusions
 # ============================================

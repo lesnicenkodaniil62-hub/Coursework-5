@@ -71,11 +71,9 @@ black>=26.5.1,<27.0.0
 isort>=9.0.1,<10.0.0
 
 # ============================================
-# Типизация: mypy ставится через extra compatible-mypy,
-# отдельный пин mypy не указываем во избежание конфликта
+# Типизация: mypy ставится через extra compatible-mypy
 # ============================================
-# Typing: mypy is installed via the compatible-mypy extra,
-# no separate mypy pin to avoid a dependency conflict
+# Typing: mypy is installed via the compatible-mypy extra
 # ============================================
 django-stubs[compatible-mypy]==6.1.2
 django-stubs-ext==6.1.2
